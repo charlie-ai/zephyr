@@ -1,0 +1,13 @@
+/*
+ * Copyright (c) 2021 Telink Semiconductor
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+&i2c { /* SCL(PE1), SDA(PE3), ALERT (PE4) */
+	sht3xd@44 {
+		compatible = "sensirion,sht3xd";
+		reg = <0x44>;
+		alert-gpios = <&gpioe 5 GPIO_ACTIVE_HIGH>;
+	};
+};
