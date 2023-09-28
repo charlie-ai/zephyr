@@ -1,0 +1,16 @@
+/*
+ * Copyright (c) 2021 Telink Semiconductor
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+&i2c { /* SCL(PE1), SDA(PE3)*/
+	shtcx@70 {
+		compatible = "sensirion,shtcx";
+		reg = <0x70>;
+		chip = "shtc3";
+		measure-mode = "normal";
+		clock-stretching;
+	};
+};
+

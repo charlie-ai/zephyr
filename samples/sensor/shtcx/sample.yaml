@@ -1,0 +1,18 @@
+#
+# Copyright (c) 2018 Peter Bigot Consulting, LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+sample:
+  name: SHT3XD Sensor Sample
+common:
+  platform_allow: tlsr9518adk80d
+  integration_platforms:
+    - tlsr9518adk80d
+  tags: sensors
+  build_only: true
+tests:
+  sample.sensor.shtcx: {}
+  sample.sensor.shtcxd.trigger:
+    extra_args: CONF_FILE="trigger.conf"
