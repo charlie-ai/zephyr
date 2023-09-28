@@ -14,51 +14,10 @@
 #define ALERT_HUMIDITY_LO 50
 #define ALERT_HUMIDITY_HI 60
 
-
-/* defines matching the related enums DT_ENUM_IDX: */
-#define CHIP_SHTC1		0
-#define CHIP_SHTC3		1
-#define MEASURE_MODE_NORMAL	0
-#define MEASURE_MODE_LOW_POWER	1
-
-enum shtcx_chip {
-	SHTC1 = CHIP_SHTC1,
-	SHTC3 = CHIP_SHTC3,
-};
-
-enum shtcx_measure_mode {
-	NORMAL = MEASURE_MODE_NORMAL,
-	LOW_POWER = MEASURE_MODE_LOW_POWER,
-};
-
-
-struct shtcx_config {
-	struct i2c_dt_spec i2c;
-	enum shtcx_chip chip;
-	enum shtcx_measure_mode measure_mode;
-	bool clock_stretching;
-};
-
 int main(void)
 {
 	const struct device *const dev = DEVICE_DT_GET_ONE(sensirion_shtcx);
 	int rc;
-
-	printf("dev->name=%s\n",dev->name);
-	const struct shtcx_config *shtcx_cfg = dev->config;
-	printf("shtcx_cfg->chip=%d\n",shtcx_cfg->chip);
-	printf("shtcx_cfg->measure_mode=%d\n",shtcx_cfg->measure_mode);
-	printf("shtcx_cfg->clock_stretching=%d\n",shtcx_cfg->clock_stretching);
-
-	struct i2c_dt_spec i2c_spce = shtcx_cfg->i2c;
-	printf("i2c_spce->addr=0x%x\n",i2c_spce.addr);
-
-	const struct device *i2c_device = i2c_spce.bus;
-	printf("i2c_device->name=%s\n",i2c_device->name);
-
-
-	printf("dev->state->initialized=%d\n", dev->state->initialized );
-	printf("dev->state->init_res=%d\n", dev->state->init_res);
 
 	if (!device_is_ready(dev)) {
 		printf("Device %s is not ready\n", dev->name);

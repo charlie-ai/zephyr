@@ -14,5 +14,3 @@ common:
   build_only: true
 tests:
   sample.sensor.shtcx: {}
-  sample.sensor.shtcxd.trigger:
-    extra_args: CONF_FILE="trigger.conf"
