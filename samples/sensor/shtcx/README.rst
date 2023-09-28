@@ -1,4 +1,4 @@
-.. _sht3xd:
+.. _shtcx:
 
 SHTCX: High accuracy digital I2C humidity sensor
 #################################################
@@ -19,8 +19,7 @@ Wiring
 *******
 
 This sample uses the SHT3X_DIS sensor controlled using the I2C interface.
-Connect Supply: **VDD**, **GND** and Interface: **SDA**, **SCL**
-and optionally connect the **ALERT** to a interrupt capable GPIO.
+Connect Supply: **VDD**, **GND** and Interface: **SDA**, **SCL**.
 The supply voltage can be in the 2.15V to 5.5V range.
 Depending on the baseboard used, the **SDA** and **SCL** lines require Pull-Up
 resistors.
@@ -28,15 +27,15 @@ resistors.
 Building and Running
 ********************
 
-This project outputs sensor data to the console. It requires a SHT3XD
+This project outputs sensor data to the console. It requires a SHTC3
 sensor. It should work with any platform featuring a I2C peripheral
 interface.  It does not work on QEMU.  In this example below the
-:ref:`nrf51_ble400` board is used.
+:ref:`tlsr9518adk80d` board is used.
 
 
 .. zephyr-app-commands::
-   :zephyr-app: samples/sensor/sht3xd
-   :board: nrf51_ble400
+   :zephyr-app: samples/sensor/sht3x
+   :board: tlsr9518adk80d
    :goals: build flash
 
 Sample Output
