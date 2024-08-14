@@ -16,19 +16,22 @@
 
 &pinctrl {
 	/* Define I2C pins: SCL(PE0), SDA(PC2) */
-	i2c_scl_pe0_default: i2c_scl_pe0_default {
-		pinmux = <B9x_PINMUX_SET(B9x_PORT_E, B9x_PIN_0, B91_FUNC_A)>;
+	i2c_scl_pe1_default: i2c_scl_pe1_default {
+		pinmux = <B9x_PINMUX_SET(B9x_PORT_E, B9x_PIN_1, B91_FUNC_A)>;
 	};
-	i2c_sda_pc2_default: i2c_sda_pc2_default {
-		pinmux = <B9x_PINMUX_SET(B9x_PORT_C, B9x_PIN_2, B91_FUNC_A)>;
+	i2c_sda_pe3_default: i2c_sda_pe3_default {
+		pinmux = <B9x_PINMUX_SET(B9x_PORT_E, B9x_PIN_3, B91_FUNC_A)>;
 	};
 };
 
 &i2c {
-	pinctrl-0 = <&i2c_scl_pe0_default &i2c_sda_pc2_default>;
+	pinctrl-0 = <&i2c_scl_pe1_default &i2c_sda_pe3_default>;
 
-	sht3xd@44 {
-		compatible = "sensirion,sht3xd";
-		reg = <0x44>;
+	shtcx@70 {
+		compatible = "sensirion,shtcx";
+		reg = <0x70>;
+		chip = "shtc3";
+		measure-mode = "normal";
+		clock-stretching;
 	};
 };

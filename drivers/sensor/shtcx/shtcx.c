@@ -92,7 +92,7 @@ static int shtcx_read_words(const struct device *dev, uint16_t cmd, uint16_t *da
 		return -EIO;
 	}
 
-	if (!cfg->clock_stretching) {
+	if (cfg->clock_stretching) {
 		k_sleep(K_USEC(max_duration_us));
 	}
 

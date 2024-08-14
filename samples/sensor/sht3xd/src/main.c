@@ -25,7 +25,7 @@ static void trigger_handler(const struct device *dev,
 
 int main(void)
 {
-	const struct device *const dev = DEVICE_DT_GET_ONE(sensirion_sht3xd);
+	const struct device *const dev = DEVICE_DT_GET_ONE(sensirion_shtcx);
 	int rc;
 
 	if (!device_is_ready(dev)) {
