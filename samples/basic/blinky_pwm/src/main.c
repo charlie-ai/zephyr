@@ -14,10 +14,16 @@
 #include <zephyr/device.h>
 #include <zephyr/drivers/pwm.h>
 
+#include "pwm.h"
+
 static const struct pwm_dt_spec pwm_led0 = PWM_DT_SPEC_GET(DT_ALIAS(pwm_led0));
 
 #define MIN_PERIOD PWM_SEC(1U) / 128U
 #define MAX_PERIOD PWM_SEC(1U)
+
+struct pwm_b9x_data {
+	uint8_t out_pin_ch_connected;
+};
 
 int main(void)
 {
@@ -33,6 +39,24 @@ int main(void)
 		       pwm_led0.dev->name);
 		return 0;
 	}
+#if 0
+	gpio_function_en(GPIO_PD0);
+	gpio_input_dis(GPIO_PD0);
+	gpio_output_dis(GPIO_PD0);
+#endif
+
+#if 1
+	pwm_set_pin(GPIO_PB4,PWM0);
+#endif
+
+#if 0
+	struct pwm_b9x_data *data = pwm_led0.dev->data;
+	uint32_t channel = 0;
+
+	if (!(data->out_pin_ch_connected & BIT(channel))) {
+		data->out_pin_ch_connected |= BIT(channel);
+	}
+#endif
 
 	/*
 	 * In case the default MAX_PERIOD value cannot be set for

@@ -46,7 +46,6 @@ static int pwm_b9x_set_cycles(const struct device *dev, uint32_t channel,
 			      uint32_t period_cycles, uint32_t pulse_cycles,
 			      pwm_flags_t flags)
 {
-	struct pwm_b9x_data *data = dev->data;
 	const struct pwm_b9x_config *config = dev->config;
 
 	/* check pwm channel */
@@ -83,6 +82,8 @@ static int pwm_b9x_set_cycles(const struct device *dev, uint32_t channel,
 		pwm_32k_chn_en(BIT(channel));
 	}
 
+	#if 0
+	struct pwm_b9x_data *data = dev->data;
 	/* connect output */
 	if (!(data->out_pin_ch_connected & BIT(channel)) &&
 		config->pins[channel] != UINT32_MAX) {
@@ -102,6 +103,8 @@ static int pwm_b9x_set_cycles(const struct device *dev, uint32_t channel,
 			return -EIO;
 		}
 	}
+
+	#endif
 
 	return 0;
 }

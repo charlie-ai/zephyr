@@ -8,6 +8,7 @@
 #include <zephyr/device.h>
 #include <zephyr/drivers/sensor.h>
 #include <stdio.h>
+#include "i2c.h"
 
 #define ALERT_HUMIDITY_LO 50
 #define ALERT_HUMIDITY_HI 60
@@ -23,15 +24,49 @@ static void trigger_handler(const struct device *dev,
 
 #endif
 
+#define     I2C_CLK_SPEED               400000 //i2c clock 400K.
+
+void shtcx_trigger_handler(const struct device *dev,
+					 const struct sensor_trigger *trigger)
+{
+
+}
+
 int main(void)
 {
 	const struct device *const dev = DEVICE_DT_GET_ONE(sensirion_shtcx);
 	int rc;
 
+#if 0
+	gpio_function_en(GPIO_PC2);
+	gpio_input_dis(GPIO_PC2);
+	gpio_output_dis(GPIO_PC2);
+
+	gpio_function_en(GPIO_PC3);
+	gpio_input_dis(GPIO_PC3);
+	gpio_output_dis(GPIO_PC3);
+#endif
+
+#if 1
+	i2c_set_pin(GPIO_PC1,GPIO_PC0);
+#endif
+
+	//while(1);
+
 	if (!device_is_ready(dev)) {
 		printf("Device %s is not ready\n", dev->name);
 		return 0;
 	}
+
+	rc = sensor_trigger_set(dev,NULL,shtcx_trigger_handler);
+	if(rc != 0)
+	{
+		printf("sensor_trigger_set rc = %d\n", rc);
+	}
+
+	k_sleep(K_MSEC(1000));
+
+
 
 #ifdef CONFIG_SHT3XD_TRIGGER
 	struct sensor_trigger trig = {

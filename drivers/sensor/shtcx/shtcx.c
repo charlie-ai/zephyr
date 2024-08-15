@@ -183,9 +183,70 @@ static int shtcx_channel_get(const struct device *dev,
 	return 0;
 }
 
+static int shtcx_trigger_set(const struct device *dev,
+			const struct sensor_trigger *trig,
+			sensor_trigger_handler_t handler)
+{
+	const struct shtcx_config *cfg = dev->config;
+	uint16_t product_id;
+
+	printk("shtcx_trigger_set 1\n");
+
+	if (!device_is_ready(cfg->i2c.bus)) {
+		LOG_ERR("Bus device is not ready");
+		return -ENODEV;
+	}
+
+	printk("shtcx_trigger_set 2\n");
+	k_sleep(K_USEC(SHTCX_POWER_UP_TIME_US));
+	if (cfg->chip == SHTC3) {
+		if (shtcx_wakeup(dev)) {
+			LOG_ERR("Wakeup failed");
+			return -EIO;
+		}
+	}
+
+	printk("shtcx_trigger_set 3\n");
+	if (shtcx_write_command(dev, SHTCX_CMD_SOFT_RESET) < 0) {
+		LOG_ERR("soft reset failed");
+		return -EIO;
+	}
+
+	printk("shtcx_trigger_set 4\n");
+	k_sleep(K_USEC(SHTCX_SOFT_RESET_TIME_US));
+	if (shtcx_read_words(dev, SHTCX_CMD_READ_ID, &product_id, 1, 0) < 0) {
+		LOG_ERR("Failed to read product id!");
+		return -EIO;
+	}
+
+	printk("shtcx_trigger_set 5\n");
+	if (cfg->chip == SHTC1) {
+		if ((product_id & SHTC1_ID_MASK) != SHTC1_ID_VALUE) {
+			LOG_ERR("Device is not a SHTC1");
+			return -EINVAL;
+		}
+	}
+
+	printk("shtcx_trigger_set 6\n");
+	if (cfg->chip == SHTC3) {
+		if ((product_id & SHTC3_ID_MASK) != SHTC3_ID_VALUE) {
+			LOG_ERR("Device is not a SHTC3");
+			return -EINVAL;
+		}
+		shtcx_sleep(dev);
+	}
+
+	printk("Clock-stretching enabled: %d\n", cfg->clock_stretching);
+	printk("Measurement mode: %d\n", cfg->measure_mode);
+	printk("Trigger Set SHTCX\n");
+	return 0;
+}
+
+
 static const struct sensor_driver_api shtcx_driver_api = {
 	.sample_fetch = shtcx_sample_fetch,
 	.channel_get = shtcx_channel_get,
+	.trigger_set = shtcx_trigger_set,
 };
 
 static int shtcx_init(const struct device *dev)
@@ -197,7 +258,7 @@ static int shtcx_init(const struct device *dev)
 		LOG_ERR("Bus device is not ready");
 		return -ENODEV;
 	}
-
+#if 0
 	k_sleep(K_USEC(SHTCX_POWER_UP_TIME_US));
 	if (cfg->chip == SHTC3) {
 		if (shtcx_wakeup(dev)) {
@@ -233,7 +294,8 @@ static int shtcx_init(const struct device *dev)
 
 	LOG_DBG("Clock-stretching enabled: %d", cfg->clock_stretching);
 	LOG_DBG("Measurement mode: %d", cfg->measure_mode);
-	LOG_DBG("Init SHTCX");
+#endif
+	printk("Init SHTCX");
 	return 0;
 }
 
